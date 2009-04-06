@@ -2,7 +2,10 @@ use inc::Module::Install;
 name 'Send-Gmail-Simple';
 all_from 'lib/Send/Gmail/Simple.pm';
 
-# requires '';
+requires 'Net::SMTP::SSL';
+requires 'MIME::Entity';
+requires 'Email::Date::Format';
+requires 'Authen::SASL';
 
 tests 't/*.t';
 author_tests 'xt';
