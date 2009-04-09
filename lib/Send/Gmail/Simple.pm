@@ -3,6 +3,7 @@ package Send::Gmail::Simple;
 use strict;
 use warnings;
 use utf8;
+use 5.008001;
 use Carp qw/croak/;
 use Net::SMTP::SSL;
 use MIME::Entity;
@@ -162,6 +163,8 @@ For other arguments see the L<MIME::Entity>.
 return error message.
 
   warn $gmail->error;
+
+=back
 
 =head1 AUTHOR
 
