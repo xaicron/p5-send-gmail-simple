@@ -33,8 +33,8 @@ sub send {
 	
 	my $mime = MIME::Entity->build(
 		Date     => Email::Date::Format::email_date,
-		Type     => 'text/plain; charset="ISO-2022-JP"',
-		Encoding => '7bit',
+		Type     => 'text/plain; charset="utf-8"',
+		Encoding => 'binary',
 		%$args,
 	);
 	
@@ -101,7 +101,7 @@ Send::Gmail::Simple - Very simple Gmail sending interface.
   
   my $gmail = Send::Gmail::Simple->new($username, $password);
   
-  $gmail->send(
+  $gmail->send({
       From     => $from,
       TO       => $to,
       CC       => [$cc, $cc2],
@@ -112,7 +112,7 @@ Send::Gmail::Simple - Very simple Gmail sending interface.
           { Path => '/home/hoge/erogazo/HENTAI.jpg', Name => 'Abnormal.jpg'  },
           { Path => '/home/fuga/HENTAI.jpg' }, # Name is basename of Path (HENTAI.jpg)
       ],
-  ) or die $gmail->error;
+  }) or die $gmail->error;
 
 =head1 DESCRIPTION
 
@@ -130,7 +130,7 @@ Of course, TO CC and BCC can also specify more than one.
 Constructor.
 Mosut be username and password.
 
-=item B<send(From => $from, TO => $to, Subject => $subject, Body => $body)
+=item B<send({ From => $from, TO => $to, Subject => $subject, Body => $body })
 
 Send gmail.
 
