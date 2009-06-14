@@ -38,6 +38,15 @@ From: 'test@example.com'
 TO: 'to@exmaple.com'
 Subject: 'this is test'
 
+=== test Parts undef
+--- args
+From: 'test@example.com'
+TO: 'to@exmaple.com'
+Subject: 'this is test'
+Body: 'aaa'
+Parts:
+  Name: 'hoge.jpg'
+
 === test Parts
 --- args
 From: 'test@example.com'
@@ -45,4 +54,4 @@ TO: 'to@exmaple.com'
 Subject: 'this is test'
 Body: 'aaa'
 Parts:
-  Path: 'nthing'
+  Path: 'nothing'
