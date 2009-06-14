@@ -3,7 +3,7 @@ package Send::Gmail::Simple;
 use strict;
 use warnings;
 use utf8;
-use 5.008001;
+use 5.00801;
 use Carp qw/croak/;
 use Net::SMTP::SSL;
 use MIME::Entity;
@@ -41,7 +41,7 @@ sub send {
 	if ($args->{Parts}) {
 		for my $hash (&_deref($args->{Parts})) {
 			croak "Usage: $self->send({ Parts => [ {Path => \$file_path, Name => \$file_name}, { ... } ] })" unless $hash->{Path};
-			croak $hash->{Path}, " $!" unless -f $hash->{Path};
+			croak "$hash->{Path} $!" unless -f $hash->{Path};
 			$mime->attach(
 				Path        => $hash->{Path},
 				Filename    => $hash->{Name}        || basename($hash->{Path}),
@@ -150,10 +150,10 @@ Send gmail.
       { Path => $att_file2, Name => 'error.log' },
   ]
   Parts => {
-      Path     => $att_file,
-      Name     => 'sexy.jpg',
-      Type     => 'image/jpg',  # default 'application/octet-stream'
-      Encoding => 'base64',     # default
+      Path     => $att_file,    # required
+      Name     => 'sexy.jpg',   # default File::Basename::basename $att_file
+      Type     => 'image/jpeg', # default 'application/octet-stream'
+      Encoding => 'base64',     # default 'base64'
   }
   
 For other arguments see the L<MIME::Entity>.
