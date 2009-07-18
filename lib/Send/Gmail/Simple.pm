@@ -3,14 +3,14 @@ package Send::Gmail::Simple;
 use strict;
 use warnings;
 use utf8;
-use 5.00801;
+use 5.008001;
 use Carp qw/croak/;
 use Net::SMTP::SSL;
 use MIME::Entity;
 use Email::Date::Format;
 use File::Basename qw/basename/;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub new {
 	my $class = shift;
@@ -37,6 +37,13 @@ sub send {
 		Encoding => 'binary',
 		%$args,
 	);
+	
+	if ($args->{RowHeader} and ref $args->{RowHeader} eq 'HASH') {
+		my $header = $args->{RowHeader};
+		for my $key (keys %{$header}) {
+			$mime->head->replace($key, $header->{$key});
+		}
+	}
 	
 	if ($args->{Parts}) {
 		for my $hash (&_deref($args->{Parts})) {
