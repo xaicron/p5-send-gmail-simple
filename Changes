@@ -1,5 +1,8 @@
 Revision history for Perl extension Send::Gmail::Simple
 
+0.04    Sat Jul 18 22:16:10 2009
+        - added 'RoHeaher' argument
+        
 0.03    Sun Jun 14 22:13:26 2009
         - tweak
         
