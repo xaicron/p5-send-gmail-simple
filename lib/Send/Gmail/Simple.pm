@@ -66,28 +66,24 @@ sub send {
 		Timeout => $args->{Timeout} || 15,
 	) or die "Net::SMTP::SSL->new failed!!";
 	
-	if ($smtp->auth($self->{username}, $self->{password})) {
-		$smtp->mail($args->{FROM});
-		$smtp->to(&_deref($args->{TO}));
-		$smtp->cc(&_deref($args->{CC})) if $args->{CC};
-		$smtp->bcc(&_deref($args->{BCC})) if $args->{BCC};
-		$smtp->data;
-		
-		$smtp->datasend($mime->stringify);
-		$smtp->dataend;
-		$smtp->quit;
-	}
+	($self->error('Authentication failure') && return ) unless $smtp->auth($self->{username}, $self->{password});
 	
-	else {
-		$self->{error} = "send e-mail failure (" . $args->{TO} .")";
-		return 0;
-	}
+	$smtp->mail($args->{FROM})        || ( $self->error('[FROM] failure')    && return );
+	$smtp->to(&_deref($args->{TO}))   || ( $self->error('[TO] failure')      && return );
+	$smtp->cc(&_deref($args->{CC}))   || ( $self->error('[CC] failure')      && return ) if $args->{CC};
+	$smtp->bcc(&_deref($args->{BCC})) || ( $self->error('[BCC] failure')     && return ) if $args->{BCC};
+	$smtp->data                       || ( $self->error('[Newline] failure') && return );
+	$smtp->datasend($mime->stringify) || ( $self->error('[Data] failure')    && return );
+	$smtp->dataend                    || ( $self->error('[DataEnd] failure') && return );
+	$smtp->quit                       || ( $self->error('[Quit] failure')    && return );
 	
 	return 1;
 }
 
 sub error {
-	return shift->{error};
+	my $self = shift;
+	my $msg = shift || return $self->{_error};
+	$self->{_error} = $msg;
 }
 
 sub _deref {
