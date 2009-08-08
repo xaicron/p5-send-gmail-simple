@@ -145,6 +145,9 @@ Send gmail.
   BCC => $bcc
   BCC => [$bcc1, $bcc2]
   
+  # message
+  Body => 'Hello, world!'
+  
   # attachments in multipart
   Parts => { Path => $att_file }
   Parts => { Path => $att_file, Name => 'error.log' }
